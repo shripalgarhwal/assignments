@@ -1,7 +1,7 @@
 import initialState from './default-state';
 import { ActionTypes } from './actions-types';
 
-function transactionReducer(state = initialState, action) {
+function Reducer(state = initialState, action) {
     switch (action.type) {
       case ActionTypes.ADD_NEW_NOTES:
         const noteId = state.idIncrement + 1;
@@ -32,4 +32,4 @@ function transactionReducer(state = initialState, action) {
         return state
     }
 }
-export default transactionReducer;
+export default Reducer;

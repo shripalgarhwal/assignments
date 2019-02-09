@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
-import transactionReducer from './transaction-reducer';
+import Reducer from './reducer';
 
-const store = createStore(transactionReducer);
+const store = createStore(Reducer);
 
 export default store;

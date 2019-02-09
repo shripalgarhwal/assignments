@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import boundActions from "../state/actions";
 import ListNotesHome from './notes/list-notes-home';
 import AddNotes from './notes/add-update-notes';
+import TextInput from './notes/input-field';
+import TextAreaField from './notes/textarea-field';
 
 
 class AppHome extends React.Component {
@@ -12,7 +14,6 @@ class AppHome extends React.Component {
         super(props);
         this.deleteNotes = this.deleteNotes.bind(this);
         this.updateNotes = this.updateNotes.bind(this);
-
         this.saveNotes = this.saveNotes.bind(this);
         this.addNotes = this.addNotes.bind(this);
         this.changeTitle = this.changeTitle.bind(this);
@@ -24,7 +25,7 @@ class AppHome extends React.Component {
                 title: "",
                 body: ""
             },
-            updateItem: false
+            enableSave: false
         }
     }
     deleteNotes(value) {
@@ -37,20 +38,35 @@ class AppHome extends React.Component {
                 title: value.title,
                 body: value.body
             },
-            updateItem: true         
+            enableSave: true         
         })
     }
     changeTitle(event) {
         const newState = Object.assign({}, this.state.selectedItem, { title: event.target.value });
         this.setState({
             selectedItem: newState
+        }, () => {
+            this.validateSave();
         });
     }
     changeBody(event) {
         const newState = Object.assign({}, this.state.selectedItem, { body: event.target.value });
         this.setState({
             selectedItem: newState
-        });
+        }, () => {
+            this.validateSave();
+        });        
+    }
+    validateSave() {
+        if(this.state.selectedItem.title !== "" && this.state.selectedItem.body !== "" ) {
+            this.setState({
+                enableSave: true
+            });
+        } else {
+            this.setState({
+                enableSave: false
+            });
+        }
     }
     saveNotes() {
         if(this.state.selectedItem.noteId) {
@@ -90,14 +106,20 @@ class AppHome extends React.Component {
                     </div>
                     <div className="col-xs-12 col-sm-9 col-md-9 col-lg-9">
                         <AddNotes 
-                            title={this.state.selectedItem.title}
-                            body={this.state.selectedItem.body}
+                            enableSave={this.state.enableSave}
                             saveNotes={this.saveNotes}
                             addNotes={this.addNotes}
-                            changeTitle={this.changeTitle}
-                            changeBody={this.changeBody}
                             updateItem={this.state.updateItem}
-                        ></AddNotes>
+                        >
+                            <TextInput 
+                                fieldValue={this.state.selectedItem.title}
+                                fieldLabel={"Title:"}
+                                changeValue={this.changeTitle}></TextInput>
+                            <TextAreaField 
+                                fieldValue={this.state.selectedItem.body}
+                                fieldLabel={"Body:"}
+                                changeValue={this.changeBody}></TextAreaField>
+                        </AddNotes>
                     </div>
                 </div>
             </div>

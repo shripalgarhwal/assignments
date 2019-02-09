@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import boundActions from "../../state/actions";
-
 
 
 const AddNotes = (props) => {
@@ -20,22 +17,10 @@ const AddNotes = (props) => {
                         event.preventDefault();
                         props.saveNotes();
                     }}>
-                        <div className="form-group">
-                            <label>Title:</label>
-                            <input type="text"
-                                value={props.title} 
-                                className="form-control" 
-                                onChange={props.changeTitle} />
-                        </div>
-                        <div className="form-group">
-                            <label>Body:</label>
-                            <textarea type="text" 
-                                value={props.body} 
-                                className="form-control" 
-                                onChange={props.changeBody} ></textarea>
-                        </div>
+                        {props.children}
                         <div className="form-group text-right">
                             <input className="btn btn-primary"
+                                disabled={!props.enableSave}
                                 type="submit" value="Save" />
                         </div>
                     </form>
@@ -45,12 +30,9 @@ const AddNotes = (props) => {
         )
     }
 AddNotes.propTypes = {
-    body: PropTypes.string,
-    title: PropTypes.string,
+    enableSave: PropTypes.bool,
     saveNotes: PropTypes.func,
     addNotes: PropTypes.func,
-    changeTitle: PropTypes.func,
-    changeBody: PropTypes.func,
     updateItem: PropTypes.bool,
 }
 export default AddNotes;
